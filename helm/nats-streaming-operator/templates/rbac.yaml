@@ -4,6 +4,11 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: nats-streaming-operator
+  {{- if .Values.clusterScoped }}
+  namespace: {{ .Values.cluster.namespace | default "nats-io" | quote }}
+  {{- else}}
+  namespace: {{ .Values.cluster.namespace | default .Release.Namespace | quote }}
+  {{- end}}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 {{- if .Values.clusterScoped }}
@@ -24,7 +29,11 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: nats-streaming-operator
-  namespace: {{ .Release.Namespace }}
+  {{- if .Values.clusterScoped }}
+  namespace: {{ .Values.cluster.namespace | default "nats-io" | quote }}
+  {{- else}}
+  namespace: {{ .Values.cluster.namespace | default .Release.Namespace | quote }}
+  {{- end}}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 {{- if .Values.clusterScoped }}

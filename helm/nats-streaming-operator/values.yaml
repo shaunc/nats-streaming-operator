@@ -10,6 +10,11 @@ cluster:
   # Name of the NATS Streaming Cluster
   name: nats-streaming-cluster
 
+  # Namespace of the streaming cluster; omitted if empty 
+  # and clusterScoped is false; if empty and clusterScoped is true,
+  # defaults to "nats-io"
+  namespace: ""
+
   # Version of the NATS Streaming Cluster to deploy
   version: 0.12.2
 
@@ -83,9 +88,9 @@ podAnnotations: {}
 ##
 podLabels: {}
 
-## Update strategy, can be set to RollingUpdate or OnDelete by default.
+## Update strategy, can be set to RollingUpdate (default) or Recreate.
 ## https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#updating-statefulsets
-updateStrategy: OnDelete
+updateStrategy: RollingUpdate
 
 ## Partition update strategy
 ## https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#partitions

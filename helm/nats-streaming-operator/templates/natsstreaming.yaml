@@ -3,6 +3,11 @@ apiVersion: streaming.nats.io/v1alpha1
 kind: NatsStreamingCluster
 metadata:
   name: {{ .Values.cluster.name }}
+  {{- if .Values.clusterScoped }}
+  namespace: {{ .Values.cluster.namespace | default "nats-io" | quote }}
+  {{- else}}
+  namespace: {{ .Values.cluster.namespace | default .Release.Namespace | quote }}
+  {{- end}}
 spec:
   size: {{ .Values.cluster.size }}
   image: nats-streaming:{{ .Values.cluster.version }}
